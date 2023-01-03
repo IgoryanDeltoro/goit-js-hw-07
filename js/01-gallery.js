@@ -3,28 +3,24 @@ import { galleryItems } from "./gallery-items.js";
 
 const divElementByClass = document.querySelector(".gallery");
 
-divElementByClass.addEventListener("click", hendleEventGalery);
+divElementByClass.addEventListener("click", createModalWindow);
 
-addListOnPage();
+addGaleryOnPage();
 
-function addListOnPage() {
-  const liElement = galleryItems
+function addGaleryOnPage() {
+  const divElement = galleryItems
     .map(({ preview, original, description }) => {
       return ` <div class="gallery__item"><a class="gallery__link" href="large-image.jpg">
     <img class="gallery__image" src="${preview}" data-source="${original}" alt="${description}"/></a></div>`;
     })
     .join("");
 
-  renderStringOfTagOnHtml(liElement);
+  divElementByClass.innerHTML = divElement;
 }
 
-function renderStringOfTagOnHtml(string) {
-  divElementByClass.innerHTML = string;
-}
-
-function hendleEventGalery(event) {
+function createModalWindow(event) {
   event.preventDefault();
-  console.log(event.target);
+
   if (event.target.nodeName !== "IMG") {
     return;
   }
@@ -35,11 +31,23 @@ function hendleEventGalery(event) {
     <img src="${largeImg}" width="800" height="600">
 `);
 
+  openingAndClosingModalWindow(instance);
+}
+
+function openingAndClosingModalWindow(instance) {
   instance.show();
 
-  document.addEventListener("keydown", (event) => {
-    if (event.code === "Escape") {
-      instance.close();
+  document.addEventListener("keydown", hendleEventKeydown);
+
+  function hendleEventKeydown(event) {
+    if (event.code !== "Escape") {
+      return;
     }
-  });
+    instance.close();
+    removeKeyListener();
+  }
+
+  function removeKeyListener() {
+    document.removeEventListener("keydown", hendleEventKeydown);
+  }
 }
