@@ -43,11 +43,10 @@ function openingAndClosingModalWindow(instance) {
     if (event.code !== "Escape") {
       return;
     }
-    instance.close();
-    removeKeyListener();
+    instance.close(() => removeKeydownListener());
   }
 
-  function removeKeyListener() {
+  function removeKeydownListener() {
     document.removeEventListener("keydown", hendleEventKeydown);
   }
 }
