@@ -27,26 +27,22 @@ function createModalWindow(event) {
 
   const largeImg = event.target.dataset.source;
 
-  const instance = basicLightbox.create(`
+  const instance = basicLightbox.create(
+    `
     <img src="${largeImg}" width="800" height="600">
-`);
+`
+  );
 
-  openingAndClosingModalWindow(instance);
-}
-
-function openingAndClosingModalWindow(instance) {
-  instance.show();
-
-  document.addEventListener("keydown", hendleEventKeydown);
+  instance.show(() => {
+    document.addEventListener("keydown", hendleEventKeydown);
+  });
 
   function hendleEventKeydown(event) {
     if (event.code !== "Escape") {
       return;
     }
-    instance.close(() => removeKeydownListener());
-  }
-
-  function removeKeydownListener() {
-    document.removeEventListener("keydown", hendleEventKeydown);
+    instance.close(() => {
+      document.removeEventListener("keydown", hendleEventKeydown);
+    });
   }
 }
