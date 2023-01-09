@@ -41,6 +41,7 @@ function createModalWindow(event) {
     if (event.code !== "Escape") {
       return;
     }
+    
     instance.close(() => {
       document.removeEventListener("keydown", hendleEventKeydown);
     });
