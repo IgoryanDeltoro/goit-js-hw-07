@@ -30,20 +30,22 @@ function createModalWindow(event) {
   const instance = basicLightbox.create(
     `
     <img src="${largeImg}" width="800" height="600">
-`
+`,
+    {
+      onShow: () => document.addEventListener("keydown", hendleEventKeydown),
+      onClose: () =>
+        document.removeEventListener("keydown", hendleEventKeydown),
+    }
   );
 
-  instance.show(() => {
-    document.addEventListener("keydown", hendleEventKeydown);
-  });
+  instance.show();
 
   function hendleEventKeydown(event) {
+    console.log(event);
     if (event.code !== "Escape") {
       return;
     }
-    
-    instance.close(() => {
-      document.removeEventListener("keydown", hendleEventKeydown);
-    });
+
+    instance.close();
   }
 }
